@@ -1,0 +1,32 @@
+$Id$
+
+Munin plugin that monits a specific process's memory.
+
+It works by scanning the process table for processes belonging to the specified
+user, tagged with an environment variable. If such a process exist it reports
+the memory usage of the process using the specified tag's value as the label
+name.
+
+Tagging a process is as easy as exporting an environment variable.
+
+Installation
+------------
+
+We will assume you want to check zope, and you want to tag it with MUNIN_TAG.
+
+1. Type make.
+2. Copy process_memory into /etc/munin/plugins, or some place convenient and symlink it there.
+3. Configure munin-node and set the username under which the processes will run as well as the tag:
+
+    --- snip: /etc/munin/plugin-conf.d/process_memory ---
+    [process_memory]
+    user root
+    env.OWNER zope
+    env.TAG MUNIN_TAG
+    --- snip: /etc/munin/plugin-conf.d/process_memory ---
+
+4. Change the startup script of the process and put MUNIN_TAG into it's
+environment, for example, to monitor a zope process, edit bin/runzope and add
+"export MUNIN_TAG=zope2.9" to it.
+
+5. Restart munin-node.
