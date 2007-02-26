@@ -43,7 +43,7 @@ int readfile(const char *filename, char *buf, size_t count){
     int fd;
     bzero(buf, count);
     fd = open(filename, O_RDONLY);
-    while((j = read(fd, buf+i, count))>0){
+    while((j = read(fd, buf+i, count-i))>0){
         i+=j;
     }
     return i;
