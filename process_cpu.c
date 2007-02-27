@@ -61,7 +61,7 @@ unsigned long int cpuusage(pid_t pid){
 }
 
 void writecache(const char *cachefile, int uptime, int usage){
-    int fd = open(cachefile, O_WRONLY | O_CREAT, S_IRWXU);
+    int fd = open(cachefile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if(fd!=-1){
         char buf[1024];
         int n, i;
@@ -128,10 +128,12 @@ int main(int argc, const char **argv){
                 if(config){
                     printf("%s.label %s\n", name, name);
                 } else {
-                    readcache(cache, &uptime[0], &usage[0]);
+                    char cachefile[1024];
+                    snprintf(cachefile, sizeof(cachefile), "%s/%s", cache, name);
+                    readcache(cachefile, &uptime[0], &usage[0]);
                     usage[1] = cpuusage(atoi(de->d_name));
                     uptime[1] = getuptime();
-                    writecache(cache, uptime[1], usage[1]);
+                    writecache(cachefile, uptime[1], usage[1]);
                     printf("%s.value %lu\n", name, (100*(usage[1]-usage[0]))/(uptime[1]-uptime[0]));
                 }
             }
