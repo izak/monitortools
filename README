@@ -15,14 +15,24 @@ Installation
 We will assume you want to check zope, and you want to tag it with MUNIN_TAG.
 
 1. Type make.
-2. Copy process_memory into /etc/munin/plugins, or some place convenient and symlink it there.
-3. Configure munin-node and set the username under which the processes will run as well as the tag:
+2. Copy process_memory  and process_cpu into /etc/munin/plugins, or some place
+   convenient and symlink it there.
+3. Configure munin-node and set the username under which the processes will run
+   as well as the tag:
 
     --- snip: /etc/munin/plugin-conf.d/process_memory ---
     [process_memory]
     user root
     env.OWNER zope
     env.TAG MUNIN_TAG
+    --- snip: /etc/munin/plugin-conf.d/process_memory ---
+
+    --- snip: /etc/munin/plugin-conf.d/process_cpu ---
+    [process_cpu]
+    user root
+    env.OWNER zope
+    env.TAG MUNIN_TAG
+    env.CACHE /tmp/.cpucache
     --- snip: /etc/munin/plugin-conf.d/process_memory ---
 
 4. Change the startup script of the process and put MUNIN_TAG into it's
