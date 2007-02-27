@@ -19,7 +19,7 @@ int readfile(const char *filename, char *buf, size_t count){
     return i;
 }
 
-const char* scanbuf(const char *buf, size_t count, const char *needle, char separator){
+const char* scanbuf(const char *buf, size_t count, const char *needle){
     int j;
     const char *ptr = buf;
 
@@ -27,7 +27,7 @@ const char* scanbuf(const char *buf, size_t count, const char *needle, char sepa
         if(strstr(ptr, needle)){
             return ptr;
         }
-        while((*ptr!=separator) && (ptr < buf+count)) { ptr++; }
+        while((*ptr!='\0') && (ptr < buf+count)) { ptr++; }
         ptr++; /* point to next string in buffer */
     }
     return NULL;

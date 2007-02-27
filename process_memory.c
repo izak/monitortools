@@ -38,7 +38,7 @@ const char* monitored(const char *pidpath, const char *zopeuser, const char *tag
         int i;
         snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
         i = readfile(procpidenv, env, sizeof(env));
-        if(ptr=scanbuf(env, i, tag, '\0')){
+        if(ptr=scanbuf(env, i, tag)){
             if(ptr = strchr(ptr, '=')){
                 return ++ptr;
             }
