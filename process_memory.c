@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include "common.h"
 
 /*
  * Find memory usage for processes that:
@@ -21,33 +22,6 @@ int getzopeuid(const char *username){
     pw = getpwnam(username);
     if(!pw) return -1;
     return pw->pw_uid;
-}
-
-const char* scanbuf(const char *buf, size_t count, const char *needle){
-    int j;
-    const char *ptr = buf;
-
-    while(ptr < buf + count){
-        if(strstr(ptr, needle)){
-            return ptr;
-        }
-        while(*ptr!='\0') { ptr++; }
-        ptr++; /* point to next string in buffer */
-    }
-    return NULL;
-}
-
-int readfile(const char *filename, char *buf, size_t count){
-    int i = 0;
-    int j;
-    int fd;
-    bzero(buf, count);
-    fd = open(filename, O_RDONLY);
-    while((j = read(fd, buf+i, count-i))>0){
-        i+=j;
-    }
-    close(fd);
-    return i;
 }
 
 const char* monitored(const char *pidpath, const char *zopeuser, const char *tag){
@@ -64,7 +38,7 @@ const char* monitored(const char *pidpath, const char *zopeuser, const char *tag
         int i;
         snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
         i = readfile(procpidenv, env, sizeof(env));
-        if(ptr=scanbuf(env, i, tag)){
+        if(ptr=scanbuf(env, i, tag, '\0')){
             if(ptr = strchr(ptr, '=')){
                 return ++ptr;
             }
