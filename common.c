@@ -4,6 +4,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdio.h>
+#include <pwd.h>
 #include "common.h"
 
 int readfile(const char *filename, char *buf, size_t count){
@@ -12,11 +14,14 @@ int readfile(const char *filename, char *buf, size_t count){
     int fd;
     bzero(buf, count);
     fd = open(filename, O_RDONLY);
-    while((j = read(fd, buf+i, count-i))>0){
-        i+=j;
+    if(fd!=-1){
+        while((j = read(fd, buf+i, count-i))>0){
+            i+=j;
+        }
+        close(fd);
+        return i;
     }
-    close(fd);
-    return i;
+    return -1;
 }
 
 const char* scanbuf(const char *buf, size_t count, const char *needle){
@@ -24,13 +29,45 @@ const char* scanbuf(const char *buf, size_t count, const char *needle){
     const char *ptr = buf;
 
     while(ptr < buf + count){
-        if(strstr(ptr, needle)){
+        if(strncmp(ptr, needle, strlen(needle))==0){
             return ptr;
         }
         while((*ptr!='\0') && (ptr < buf+count)) { ptr++; }
         ptr++; /* point to next string in buffer */
     }
     return NULL;
+}
+
+int getzopeuid(const char *username){
+    struct passwd *pw;
+    pw = getpwnam(username);
+    if(!pw) return -1;
+    return pw->pw_uid;
+}
+
+int monitored(const char *pidpath, const char *zopeuser, const char *tag, char *name, size_t nlen){
+    struct stat s_procpid;
+    uid_t zopeuid = getzopeuid(zopeuser);
+
+    if(stat(pidpath, &s_procpid)==-1){
+        return 0;
+    }
+    if(s_procpid.st_uid == zopeuid){
+        char procpidenv[1024];
+        char env[4096];
+        const char *ptr;
+        int i;
+        snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
+        i = readfile(procpidenv, env, sizeof(env));
+        if(ptr=scanbuf(env, i, tag)){
+            if(ptr = strchr(ptr, '=')){
+                ptr++;
+                strncpy(name, ptr, nlen);
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 /* vim: set ts=4 sw=4 expandtab: */
