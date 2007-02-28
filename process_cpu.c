@@ -122,6 +122,7 @@ int main(int argc, const char **argv){
         if((de->d_type == DT_DIR) && (atoi(de->d_name)>0)){
             char p[256+6];
             char name[1024];
+            unsigned long int ticks, span;
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
             if(monitored(p, owner, tag, name, sizeof(name))){
                 if(config){
@@ -133,7 +134,12 @@ int main(int argc, const char **argv){
                     usage[1] = cpuusage(atoi(de->d_name));
                     uptime[1] = getuptime();
                     writecache(cachefile, uptime[1], usage[1]);
-                    printf("%s.value %lu\n", name, (100*(usage[1]-usage[0]))/(uptime[1]-uptime[0]));
+                    /* If the process is restarted, the system is rebooted, or
+                     * the jiffy counter wraps (once every 1.5 years) just
+                     * don't report anything */
+                    if((usage[1] >= usage[0]) && (uptime[1] > uptime[0])){
+                        printf("%s.value %lu\n", name, (100*(usage[1]-usage[0]))/(uptime[1]-uptime[0]));
+                    }
                 }
             }
         }
