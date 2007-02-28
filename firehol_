@@ -1,0 +1,33 @@
+#!/bin/sh
+# $Id$
+
+IPT=/sbin/iptables
+TAIL=/usr/bin/tail
+AWK=/usr/bin/awk
+
+host=${0#*_}
+
+if test "$1" = "config"; then
+	echo "graph_order down up"
+	echo "graph_title $host traffic"
+	echo "graph_args --base 1024"
+	echo "graph_vlabel bytes in (-) / out (+) per host"
+	echo "graph_category network"
+	echo "graph_info This graph shows traffic per host"
+	echo "down.label received"
+	echo "down.type COUNTER"
+	echo "down.graph no"
+	echo "up.label bps"
+	echo "up.type COUNTER"
+	echo "up.negative down"
+	echo "up.info Traffic for $host"
+	exit 0
+fi
+
+echo -ne "down.value "
+$IPT -vnx -L INPUT | $TAIL +3 | $AWK "\$3==\"in_$host\" {print \$2}"
+
+echo -ne "up.value "
+$IPT -vnx -L OUTPUT | $TAIL +3 | $AWK "\$3==\"out_$host\" {print \$2}"
+
+exit 0
