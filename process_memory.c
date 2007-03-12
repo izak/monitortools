@@ -6,27 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
+#include "memory.h"
 
 /*
  * Find memory usage for processes that:
  * 1. Has effective uid of the specified user (/proc/PID owned by user)
  * 2. Has the specified tag in /proc/PID/environ
  */
-
-unsigned long int memusage(const char *pidpath){
-    char procpidstatm[1024];
-    char buf[1024];
-    int i;
-    unsigned long int vsz;
-
-    /* Read statm */
-    snprintf(procpidstatm, sizeof(procpidstatm), "%s/statm", pidpath);
-    bzero(buf, sizeof(buf));
-    i = readfile(procpidstatm, buf, sizeof(buf));
-    /* statm has 7 fields, but we only care about the first */
-    sscanf(buf, "%ld %*ld %*ld %*ld %*ld %*ld %*ld", &vsz);
-    return getpagesize()*vsz;
-}
 
 int main(int argc, const char **argv){
     DIR *d;
