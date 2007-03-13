@@ -1,0 +1,3 @@
+usr/lib/upfrontmonitortools/nagios
+usr/share/upfrontmonitortools/nagios/config
+var/lib/upfrontmonitortools/nagios

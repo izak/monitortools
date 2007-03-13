@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+# Shamelessly borrowed from nagios-plugins
+
+if [ "$1" = "configure" ]; then
+        (
+                cd usr/share/upfrontmonitortools/nagios/config
+                for f in *.cfg; do
+                        ucf $f /etc/nagios-plugins/config/$f
+                done
+        );
+fi
+
+#DEBHELPER#

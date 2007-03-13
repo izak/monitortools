@@ -1,0 +1,23 @@
+Source: upfrontmonitortools
+Section: web
+Priority: optional
+Maintainer: Izak Burger <izak@upfrontsystems.co.za>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.2
+
+Package: upfrontmonitortools-nagios
+Suggests: nagios
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Miscelaneous monitor tools
+ Tools written at upfront systems for monitoring and graping processes.
+ .
+ This package contains the nagios plugins.
+
+Package: upfrontmonitortools-munin
+Architecture: any
+Depends: munin-node, ${shlibs:Depends}, ${misc:Depends}
+Description: Miscelaneous monitor tools
+ Tools written at upfront systems for monitoring and graping processes.
+ .
+ This package contains the munin plugins.

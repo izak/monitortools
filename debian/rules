@@ -1,0 +1,85 @@
+#!/usr/bin/make -f
+#
+# $Id: rules 35 2007-01-05 11:48:36Z izak $
+
+#export DH_VERBOSE=1
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+
+build: build-stamp
+build-stamp: configure-stamp 
+	dh_testdir
+	# Compile the package.
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	# Clean up after the build process.
+	$(MAKE) clean
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+	
+	# Nagios
+	install -m 755 nagios/checkmonit.py         $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
+	install -m 755 nagios/check_process_cpu     $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
+	install -m 755 nagios/check_process_memory  $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
+	install -m 755 nagios/check_unix            $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
+	install -m 644 debian/pluginconfig/nagios/* $(CURDIR)/debian/upfrontmonitortools-nagios/usr/share/upfrontmonitortools/nagios/config
+
+	# Munin
+	install -m 755 munin/process_cpu           $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
+	install -m 755 munin/firehol_              $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
+	install -m 755 munin/process_memory        $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
+	install -m 755 munin/process_threads       $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
+	install -m 644 debian/pluginconfig/munin/* $(CURDIR)/debian/upfrontmonitortools-nagios/etc/munin/plugin-conf.d
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_installdocs
+#	dh_installexamples
+#	dh_install
+#	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_python
+#	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

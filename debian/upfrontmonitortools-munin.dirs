@@ -1,0 +1,3 @@
+usr/lib/upfrontmonitortools/munin
+var/lib/upfrontmonitortools/munin
+etc/munin/plugin-conf.d

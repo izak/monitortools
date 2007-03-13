@@ -1,0 +1,5 @@
+[process_cpu]
+user root
+env.OWNER zope
+env.TAG MUNIN_TAG
+env.CACHE /tmp/.cpucache
