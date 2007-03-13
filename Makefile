@@ -2,7 +2,7 @@
 
 CC = gcc
 
-all: munin/process_memory munin/process_cpu munin/process_threads nagios/check_process_memory nagios/check_process_memory nagios/check_unix
+all: munin/process_memory munin/process_cpu munin/process_threads nagios/check_process_memory nagios/check_process_memory nagios/check_unix nagios/check_process_cpu
 
 munin/process_memory: common.o memory.o munin/process_memory.o
 	$(CC) $^ -o $@
