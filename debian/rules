@@ -32,7 +32,6 @@ install: build
 	dh_installdirs
 	
 	# Nagios
-	install -m 755 nagios/checkmonit.py         $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 755 nagios/check_process_cpu     $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 755 nagios/check_process_memory  $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 755 nagios/check_unix            $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
