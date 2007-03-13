@@ -5,14 +5,29 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include "common.h"
-#include "memory.h"
+#include "../common.h"
 
-/*
- * Find memory usage for processes that:
- * 1. Has effective uid of the specified user (/proc/PID owned by user)
- * 2. Has the specified tag in /proc/PID/environ
- */
+unsigned int threadcount(const char *pidpath){
+    char procpidtask[1024];
+    DIR *d;
+    struct dirent *e;
+    unsigned int count;
+
+    /* Count threads */
+    snprintf(procpidtask, sizeof(procpidtask), "%s/task", pidpath);
+    d = opendir(procpidtask);
+    if(!d){ return 0; }
+
+    count = 0;
+    e = readdir(d);
+    while(e){
+        if((e->d_type == DT_DIR) && (atoi(e->d_name)>0)){
+            count++;
+        }
+        e = readdir(d);
+    }
+    return count;
+}
 
 int main(int argc, const char **argv){
     DIR *d;
@@ -34,9 +49,8 @@ int main(int argc, const char **argv){
     if(argc>1){
         if(strcmp(argv[1], "config")==0){
             config = 1;
-            printf("graph_title Process Memory Usage\n");
-            printf("graph_args --base 1024\n");
-            printf("graph.vlabel bytes\n");
+            printf("graph_title Process Threads\n");
+            printf("graph.vlabel threads\n");
         }
     }
 
@@ -54,7 +68,7 @@ int main(int argc, const char **argv){
                 if(config){
                     printf("%s.label %s\n", name, name);
                 } else {
-                    printf("%s.value %ld\n", name, memusage(p));
+                    printf("%s.value %u\n", name, threadcount(p));
                 }
             }
         }

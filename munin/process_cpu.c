@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <dirent.h>
-#include "common.h"
+#include "../common.h"
 
 void splitbuf(char *buf, size_t count, char separator){
     char *ptr = buf;

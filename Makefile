@@ -2,18 +2,18 @@
 
 CC = gcc
 
-all: process_memory process_cpu process_threads nagios/check_process_memory
+all: munin/process_memory munin/process_cpu munin/process_threads nagios/check_process_memory
 	strip $^
 
-process_memory: common.o process_memory.c memory.o
+munin/process_memory: common.o memory.o munin/process_memory.c
 
-nagios/check_process_memory: common.o nagios/check_process_memory.c memory.o
+nagios/check_process_memory: common.o memory.o nagios/check_process_memory.c
 
-process_cpu: common.o process_cpu.c
+munin/process_cpu: common.o munin/process_cpu.c
 
-process_threads: common.o process_threads.c
+munin/process_threads: common.o munin/process_threads.c
 
 clean:
-	-rm -f process_memory process_cpu process_threads nagios/check_process_memory common.o memory.o
+	-rm -f munin/process_memory munin/process_cpu munin/process_threads nagios/check_process_memory common.o memory.o
 
 .PHONY: clean
