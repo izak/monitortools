@@ -43,7 +43,7 @@ install: build
 	install -m 755 munin/firehol_              $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
 	install -m 755 munin/process_memory        $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
 	install -m 755 munin/process_threads       $(CURDIR)/debian/upfrontmonitortools-munin/usr/lib/upfrontmonitortools/munin
-	install -m 644 debian/pluginconfig/munin/* $(CURDIR)/debian/upfrontmonitortools-nagios/etc/munin/plugin-conf.d
+	install -m 644 debian/pluginconfig/munin/* $(CURDIR)/debian/upfrontmonitortools-munin/etc/munin/plugin-conf.d
 
 
 # Build architecture-independent files here.
