@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include "common.h"
-#include "memory.h"
+#include "../common.h"
+#include "../memory.h"
 
 void usage(const char *name){
     fprintf(stderr, "Usage: %s [-O | --owner=username] [-T | --tag=tag] [-V | --target=tagname]\n", name);
