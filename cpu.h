@@ -2,6 +2,7 @@
 
 #ifndef CPU_H
 #define CPU_H
+#include <stdlib.h>
 
 void splitbuf(char*, size_t, char);
 unsigned long int getuptime();
