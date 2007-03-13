@@ -8,6 +8,7 @@ all: munin/process_memory munin/process_cpu munin/process_threads nagios/check_p
 munin/process_memory: common.o memory.o munin/process_memory.c
 
 nagios/check_process_memory: common.o memory.o nagios/check_process_memory.c
+nagios/check_process_cpu: common.o cpu.o nagios/check_process_cpu.c
 
 munin/process_cpu: common.o cpu.o munin/process_cpu.c
 
