@@ -91,7 +91,7 @@ int main(int argc, char **argv){
             char p[256+6];
             char name[1024];
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, name, sizeof(name))){
+            if(monitored(p, owner, tag, NULL, name, sizeof(name))){
                 if(strncmp(name, target, strlen(target))==0){
                     unsigned long int mem = memusage(p);
                     if(mem > critical){

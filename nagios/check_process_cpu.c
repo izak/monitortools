@@ -92,7 +92,7 @@ int main(int argc, char **argv){
             char name[1024];
             unsigned long int ticks, span;
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, name, sizeof(name))){
+            if(monitored(p, owner, tag, NULL, name, sizeof(name))){
                 char cachefile[1024];
                 snprintf(cachefile, sizeof(cachefile), "%s/%s", cache, name);
                 readcache(cachefile, &uptime[0], &usage[0]);

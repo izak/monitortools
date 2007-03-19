@@ -19,11 +19,13 @@ int main(int argc, const char **argv){
     struct dirent *de;
     char *owner;
     char *tag;
+    char *cmdline;
     int config = 0;
 
     /* Check env */
     owner = getenv("OWNER");
     tag   = getenv("TAG");
+    cmdline = getenv("CMDLINE");
 
     if((tag==NULL) || (owner==NULL)){
         fprintf(stderr, "OWNER and/or TAG environment variable needs to be set\n");
@@ -50,7 +52,7 @@ int main(int argc, const char **argv){
             char p[256+6];
             char name[1024];
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, name, sizeof(name))){
+            if(monitored(p, owner, tag, cmdline, name, sizeof(name))){
                 if(config){
                     printf("%s.label %s\n", name, name);
                 } else {

@@ -45,25 +45,39 @@ int getzopeuid(const char *username){
     return pw->pw_uid;
 }
 
-int monitored(const char *pidpath, const char *zopeuser, const char *tag, char *name, size_t nlen){
-    struct stat s_procpid;
-    uid_t zopeuid = getzopeuid(zopeuser);
-
-    if(stat(pidpath, &s_procpid)==-1){
-        return 0;
-    }
-    if(s_procpid.st_uid == zopeuid){
-        char procpidenv[1024];
-        char env[4096];
-        const char *ptr;
+int check_cmdline(const char* pidpath, const char* cmdline){
+    if(cmdline != NULL){
+        char procpidcmdline[1024];
+        char buf[1024];
         int i;
-        snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
-        i = readfile(procpidenv, env, sizeof(env));
-        if(ptr=scanbuf(env, i, tag)){
-            if(ptr = strchr(ptr, '=')){
-                ptr++;
-                strncpy(name, ptr, nlen);
-                return 1;
+        snprintf(procpidcmdline, sizeof(procpidcmdline), "%s/cmdline", pidpath);
+        i = readfile(procpidcmdline, buf, sizeof(buf));
+        return strstr(buf, cmdline)!=NULL;
+    }
+    return 1;
+}
+
+int monitored(const char *pidpath, const char *zopeuser, const char *tag, const char* cmdline, char *name, size_t nlen){
+    if(check_cmdline(pidpath, cmdline)){
+        struct stat s_procpid;
+        uid_t zopeuid = getzopeuid(zopeuser);
+
+        if(stat(pidpath, &s_procpid)==-1){
+            return 0;
+        }
+        if(s_procpid.st_uid == zopeuid){
+            char procpidenv[1024];
+            char env[4096];
+            const char *ptr;
+            int i;
+            snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
+            i = readfile(procpidenv, env, sizeof(env));
+            if(ptr=scanbuf(env, i, tag)){
+                if(ptr = strchr(ptr, '=')){
+                    ptr++;
+                    strncpy(name, ptr, nlen);
+                    return 1;
+                }
             }
         }
     }

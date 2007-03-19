@@ -46,7 +46,7 @@ int main(int argc, const char **argv){
             char name[1024];
             unsigned long int ticks, span;
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, name, sizeof(name))){
+            if(monitored(p, owner, tag, NULL, name, sizeof(name))){
                 if(config){
                     printf("%s.label %s\n", name, name);
                 } else {
