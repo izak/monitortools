@@ -56,7 +56,7 @@ int main(int argc, const char **argv){
                 if(config){
                     printf("%s.label %s\n", name, name);
                 } else {
-                    printf("%s.value %ld\n", name, memusage(p));
+                    printf("%s.value %lu\n", name, memusage(p));
                 }
             }
         }
