@@ -9,15 +9,23 @@ Package: upfrontmonitortools-nagios
 Suggests: nagios
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Miscelaneous monitor tools
- Tools written at upfront systems for monitoring and graping processes.
+Description: Nagios plugins for monitoring process memory and cpu usage
+ Tools written at upfront systems for monitoring, restarting and graphing processes.
  .
  This package contains the nagios plugins.
 
 Package: upfrontmonitortools-munin
 Architecture: any
 Depends: munin-node, ${shlibs:Depends}, ${misc:Depends}
-Description: Miscelaneous monitor tools
- Tools written at upfront systems for monitoring and graping processes.
+Description: Munin plugins for graphing process memory and cpu usage
+ Tools written at upfront systems for monitoring, restarting and graphing processes.
  .
  This package contains the munin plugins.
+
+Package: upfrontmonitortools-utils
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Utilities for upfronthosting hosting infrastructure
+ Tools written at upfront systems for monitoring, restarting and graphing processes.
+ .
+ This package contains additional utilities for restarting processes.

@@ -1,3 +1,9 @@
+upfrontmonitortools (4) feisty; urgency=low
+
+  * New release; includes additional utilities
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Fri,  3 Aug 2007 16:03:08 +0200
+
 upfrontmonitortools (3) unstable; urgency=low
 
   * New release
