@@ -1,3 +1,10 @@
+upfrontmonitortools (5) feisty; urgency=low
+
+  * New release; use directory in /var/lib/upfrontmonitortools/munin for cpu
+    stats
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Mon,  6 Aug 2007 15:29:11 +0200
+
 upfrontmonitortools (4) feisty; urgency=low
 
   * New release; includes additional utilities

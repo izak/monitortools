@@ -1,3 +1,4 @@
 usr/lib/upfrontmonitortools/munin
 var/lib/upfrontmonitortools/munin
+var/lib/upfrontmonitortools/munin/process_cpu
 etc/munin/plugin-conf.d
