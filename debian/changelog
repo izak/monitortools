@@ -1,3 +1,9 @@
+upfrontmonitortools (6) feisty; urgency=low
+
+  * Fix bug in cpu code
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Tue,  7 Aug 2007 17:28:39 +0200
+
 upfrontmonitortools (5) feisty; urgency=low
 
   * New release; use directory in /var/lib/upfrontmonitortools/munin for cpu
