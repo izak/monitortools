@@ -58,7 +58,7 @@ unsigned long int cpuusage(pid_t pid){
     return utime+stime;
 }
 
-void writecache(const char *cachefile, int uptime, int usage){
+void writecache(const char *cachefile, unsigned long int uptime, unsigned long int usage){
     int fd = open(cachefile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if(fd!=-1){
         char buf[1024];
