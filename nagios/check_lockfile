@@ -48,7 +48,7 @@ if test -z "$obj"; then
 fi
 
 if test -f "$obj"; then
-    age=`/usr/bin/stat --printf "%Y" "$obj"`
+    age=`/usr/bin/stat --format "%Y" "$obj"`
     now=`date +%s`
     delta=$(($now - $age))
     if test $delta -lt 0; then
