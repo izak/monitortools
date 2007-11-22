@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# $Id$
+#
+
+WARN=60
+CRIT=120
+obj=""
+
+usage(){
+  echo "Usage: $1 -w warningtime -c criticaltime filename" 1>&2
+  echo "Time arguments are in seconds"
+}
+
+check_arg(){
+    if test -z "$2"; then
+        echo "$1 requires argument" 1>&2
+        exit 1
+    fi
+}
+
+while test -n "$1"; do
+    case "$1" in
+        -h)
+            usage $0
+            exit 0
+            ;;
+        -w)
+            check_arg "$1" "$2"
+            WARN="$2"
+            shift 2
+            ;;
+        -c)
+            check_arg "$1" "$2"
+            CRIT="$2"
+            shift 2
+            ;;
+        *)
+            obj="$1"
+            shift
+            ;;
+    esac
+done
+
+if test -z "$obj"; then
+    usage $0
+    exit 1
+fi
+
+if test -f "$obj"; then
+    age=`/usr/bin/stat --printf "%Y" "$obj"`
+    now=`date +%s`
+    delta=$(($now - $age))
+    if test $delta -lt 0; then
+        echo "$obj lives in the future"
+        exit 2
+    elif test $delta -gt $CRIT; then
+        echo "$obj is $delta seconds old"
+        exit 2
+    elif test $delta -gt $WARN; then
+        echo "$obj is $delta seconds old"
+        exit 1
+    fi
+fi
+# No lock file exists
+exit 0
