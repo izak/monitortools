@@ -61,6 +61,9 @@ if test -f "$obj"; then
         echo "$obj is $delta seconds old"
         exit 1
     fi
+    echo "$obj is $delta seconds old"
+    exit 0
 fi
 # No lock file exists
+echo "$obj does not exist"
 exit 0
