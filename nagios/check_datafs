@@ -14,15 +14,19 @@ fi
 
 instance="$1"
 
-sed -n '/<filestorage/,/<\/filestorage>/ {
+for source in `sed -n '/<filestorage/,/<\/filestorage>/ {
                     /^ *path/ {
-                        s#^ *path *\(.*\)$#\1#g; p
+			s#^ *path *\$INSTANCE/\(.*\)$#\1#g; p
                     }
-                }' ${instance}/etc/@(zope|zeo).conf | while read source; do
+                }' ${instance}/etc/@(zope|zeo).conf`; do
 	# Determine free space on mount point
-	free=`stat --filesystem --format="%a" "$source"`
+	freeblocks=`stat --filesystem --format="%f" "$instance/$source"`
+	blocksize=`stat --filesystem --format="%s" "$instance/$source"`
+	free=$((freeblocks*blocksize))
+
 	# Get size of Data.fs
-	size=`stat --format="%b" "$source"`
+	size=`stat --format="%s" "$instance/$source"`
+
 	# Check that size Data.fs is smaller than free space
 	if test $free -lt $size; then
 		echo "$source needs packing: $size > $free"
