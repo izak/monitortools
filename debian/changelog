@@ -1,3 +1,10 @@
+upfrontmonitortools (8) unstable; urgency=low
+
+  * Allow alternative timeout to be specified as ZOPE_RESTART_TIMEOUT
+    environment variable.
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Thu, 29 Nov 2007 15:39:53 +0200
+
 upfrontmonitortools (7) gutsy; urgency=low
 
   * Add check_lockfile nagios plugin

@@ -18,11 +18,20 @@ int restart(const char *d){
     char zopectl[1024];
     char zopelog[1024];
     int ticks;
+    int timeout;
+    char *timeoutstring;
 
     /* Check that directory exists */
     if(stat(d, &zopedirstat)==-1){
         perror("stat");
         return 1;
+    }
+
+    /* Get timeout from environment */
+    timeout = TMOUT;
+    timeoutstring = getenv("ZOPE_RESTART_TIMEOUT");
+    if(timeoutstring){
+        timeout = atoi(timeoutstring);
     }
 
     /* Set up required strings */
@@ -39,7 +48,7 @@ int restart(const char *d){
 
     /* tail the logfile and wait for startup to complete */
     ticks = 0;
-    while(ticks<TMOUT){
+    while(ticks<timeout){
         /* Read log */
         if(fgets(buf, sizeof(buf), log)){
             /* Check the line */
