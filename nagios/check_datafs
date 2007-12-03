@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# $Id$
+#
+
+shopt -s extglob
+
+export PATH=/bin:/usr/bin
+
+if test -z "$1"; then
+	echo "Usage: $0 path_to_instance"
+	exit 1
+fi
+
+instance="$1"
+
+sed -n '/<filestorage/,/<\/filestorage>/ {
+                    /^ *path/ {
+                        s#^ *path *\(.*\)$#\1#g; p
+                    }
+                }' ${instance}/etc/@(zope|zeo).conf | while read source; do
+	# Determine free space on mount point
+	free=`stat --filesystem --format="%a" "$source"`
+	# Get size of Data.fs
+	size=`stat --format="%b" "$source"`
+	# Check that size Data.fs is smaller than free space
+	if test $free -lt $size; then
+		echo "$source needs packing: $size > $free"
+		exit 2
+	fi
+done
+echo "Data.fs files don't need packing (yet)"
+exit 0
