@@ -1,3 +1,9 @@
+upfrontmonitortools (9) unstable; urgency=low
+
+  * Add check_datafs nagios plugin
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Mon,  3 Dec 2007 12:51:45 +0200
+
 upfrontmonitortools (8) unstable; urgency=low
 
   * Allow alternative timeout to be specified as ZOPE_RESTART_TIMEOUT
