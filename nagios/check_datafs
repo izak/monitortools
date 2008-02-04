@@ -20,7 +20,7 @@ for source in `sed -n '/<filestorage/,/<\/filestorage>/ {
 			s#^ *path *\$INSTANCE/\(.*\)$#\1#g; p
                     }
                 }' ${instance}/etc/@(zope|zeo).conf`; do
-	count=$((count++))
+	count=$((count+1))
 	# Determine free space on mount point
 	freeblocks=`stat --filesystem --format="%f" "$instance/$source"`
 	blocksize=`stat --filesystem --format="%s" "$instance/$source"`
