@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # $Id$
 #
@@ -14,11 +14,13 @@ fi
 
 instance="$1"
 
+count=0
 for source in `sed -n '/<filestorage/,/<\/filestorage>/ {
                     /^ *path/ {
 			s#^ *path *\$INSTANCE/\(.*\)$#\1#g; p
                     }
                 }' ${instance}/etc/@(zope|zeo).conf`; do
+	count=$((count++))
 	# Determine free space on mount point
 	freeblocks=`stat --filesystem --format="%f" "$instance/$source"`
 	blocksize=`stat --filesystem --format="%s" "$instance/$source"`
@@ -33,5 +35,11 @@ for source in `sed -n '/<filestorage/,/<\/filestorage>/ {
 		exit 2
 	fi
 done
+
+if test $count -lt 1; then
+	echo "No Data.fs files found"
+	exit 2
+fi
+
 echo "Data.fs files don't need packing (yet)"
 exit 0
