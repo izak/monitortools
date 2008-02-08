@@ -1,0 +1,88 @@
+#! /bin/sh
+#
+# $Id$
+#
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+ZOPE=/home/zope/instances/zope1
+DESC=zope1
+SRVUSER=zope
+
+ZEO="zeo"
+CLIENTS="client1 client2"
+
+startzeo() {
+        start-stop-daemon --start --quiet --pidfile ${1}/var/ZEO.pid \
+            --chuid ${SRVUSER} --exec ${1}/bin/zeoctl -- ${2:-start}
+}
+
+stopzeo() {
+        start-stop-daemon --stop --quiet --pidfile ${1}/var/ZEO.pid
+}
+
+startzope() {
+        start-stop-daemon --start --quiet --pidfile ${1}/var/Z2.pid \
+            --chuid ${SRVUSER} --exec ${1}/bin/zopectl -- start
+}
+
+stopzope() {
+        start-stop-daemon --stop --quiet --pidfile ${1}/var/Z2.pid
+}
+
+set -e
+
+case "$1" in
+  start)
+        echo "Starting zope instance $DESC: "
+        # Start ZEO if defined
+        if test -n "$ZEO"; then
+                echo -n "        $ZEO "
+                startzeo ${ZOPE}/${ZEO}
+        fi
+        # Start clients
+        for i in $CLIENTS; do
+                echo -n "        $i "
+                startzope ${ZOPE}/${i}
+        done
+        echo "."
+        ;;
+  stop)
+        echo "Stopping $DESC: "
+        # Stop clients
+        for i in $CLIENTS; do
+                echo -n "        $i "
+                stopzope ${ZOPE}/${i}
+        done
+        # Stop ZEO if defined
+        if test -n "$ZEO"; then
+                echo -n "       $ZEO "
+                stopzeo ${ZOPE}/${ZEO}
+        fi
+        echo "."
+        ;;
+  logtail)
+        logfiles=""
+        for i in $CLIENTS; do
+           logfiles="$logfiles ${ZOPE}/$i/log/event.log"
+        done
+        tail -F $logfiles
+        ;;
+
+  restart)
+        first=1
+        for i in $CLIENTS; do
+           if test $first -eq 0; then
+              # Wait for previous zope to return
+              sleep 30
+           fi
+           startzope ${ZOPE}/${i} restart
+           first=0
+        done
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
