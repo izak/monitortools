@@ -29,8 +29,8 @@ def check_required(attr):
 check_required('base')
 check_required('description')
 
-#fp = open("/etc/init.d/zope_%s"%(options.description), "w")
-fp = open("zope_%s"%(options.description), "w")
+fp = open("/etc/init.d/zope_%s"%(options.description), "w")
+#fp = open("zope_%s"%(options.description), "w")
 fp.write("ZOPE=%s\n"%(options.base))
 fp.write("DESC=%s\n"%(options.description))
 fp.write("ZOPE_RESTART_TIMEOUT=%s\n"%(options.timeout))
