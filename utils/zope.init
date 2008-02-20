@@ -16,8 +16,7 @@
 #     ZOPE_RESTART_TIMEOUT=60
 #
 # Relative paths of zeo and clients, relative to $ZOPE
-# (default: ZEO="zeo", CLIENTS="client1 client2")
-#     ZEO="zeo"
+# (default: CLIENTS="client1 client2")
 #     CLIENTS="client1 client2"
 #
 # What user to run zope as (default: zope)
@@ -33,7 +32,6 @@ if test -z "$DESC"; then
 	exit 1
 fi
 
-ZEO=${ZEO:-"zeo"}
 CLIENTS=${CLIENTS:-"client1 client2"}
 SRVUSER=${SRVUSER:-"zope"}
 
