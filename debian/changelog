@@ -1,3 +1,16 @@
+upfrontmonitortools (12) unstable; urgency=low
+
+  * Fix a bash scripting error in init script
+  * mkzopeinit will now create an executable script
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Thu, 21 Feb 2008 20:22:33 +0200
+
+upfrontmonitortools (11) unstable; urgency=low
+
+  * Add mkzopeinit machinery
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Wed, 20 Feb 2008 16:26:54 +0200
+
 upfrontmonitortools (10) feisty; urgency=low
 
   * Return critical state if no Data.fs files found
