@@ -8,7 +8,7 @@
 
 import sys
 import getopt
-import commands
+import os
 
 from optparse import OptionParser
 parser = OptionParser()
@@ -29,7 +29,8 @@ def check_required(attr):
 check_required('base')
 check_required('description')
 
-fp = open("/etc/init.d/zope_%s"%(options.description), "w")
+initscript="/etc/init.d/zope_%s"%(options.description)
+fp = open(initscript, "w")
 #fp = open("zope_%s"%(options.description), "w")
 fp.write("ZOPE=%s\n"%(options.base))
 fp.write("DESC=%s\n"%(options.description))
@@ -39,3 +40,4 @@ fp.write("CLIENTS=\"%s\"\n"%(options.clients))
 fp.write("SRVUSER=%s\n\n"%(options.user))
 fp.write("source /usr/share/upfrontmonitortools/zope/zope.init")
 fp.close()
+os.chmod(initscript, 0755)
