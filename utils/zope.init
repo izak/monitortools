@@ -40,6 +40,7 @@ export ZOPE_RESTART_TIMEOUT
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 ZOPERESTART=/usr/bin/zoperestart
+SETUIDGID=/usr/bin/setuidgid
 
 startzeo() {
         start-stop-daemon --start --quiet --pidfile ${1}/var/ZEO.pid \
@@ -102,7 +103,7 @@ case "$1" in
         for i in $CLIENTS; do
 		clients="${clients} ${ZOPE}/${i}"
         done
-	$ZOPERESTART $clients
+	$SETUIDGID $SRVUSER $ZOPERESTART $clients
 	echo "done."
         ;;
   *)
