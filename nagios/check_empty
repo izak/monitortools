@@ -4,17 +4,20 @@
 #
 
 if test -z "$1"; then
-    echo "Usage: $0 directory" 1>&2
+    echo "Usage: $0 directory ..." 1>&2
     exit 1
 fi
 
-dir="$1"
+total=0
+while test -n "$1"; do
+    files=`/usr/bin/find "$1" -type f | /usr/bin/wc -l`
+    total=$(($total+$files))
+    shift
+done
 
-files=`/usr/bin/find "$dir" -type f | /usr/bin/wc -l`
-
-if test $files -gt 0; then
-    echo "$dir is not empty"
+if test $total -gt 0; then
+    echo "Target is not empty"
     exit 2
 fi
-echo "$dir is empty"
+echo "Target is empty"
 exit 0
