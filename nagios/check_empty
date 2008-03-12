@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# $Id$
+#
+
+if test -z "$1"; then
+    echo "Usage: $0 directory" 1>&2
+    exit 1
+fi
+
+dir="$1"
+
+files=`/usr/bin/find "$dir" -type f | /usr/bin/wc -l`
+
+if test $files -gt 0; then
+    echo "$dir is not empty"
+    exit 2
+fi
+echo "$dir is empty"
+exit 0
