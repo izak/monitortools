@@ -1,0 +1,13 @@
+#!/bin/sh
+
+EGREP=/bin/egrep
+
+x="`$EGREP "st:" /proc/drbd | $EGREP -v 'st:(Primary/Secondary|Secondary/Primary)'`"
+
+if test -z "$x"; then
+	echo "DRBD OK"
+	exit 0
+else
+	echo "DRBD FAIL: $x"
+	exit 2
+fi
