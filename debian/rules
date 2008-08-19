@@ -54,6 +54,9 @@ install: build
 	install -m 644 utils/zope.init             $(CURDIR)/debian/upfrontmonitortools-utils/usr/share/upfrontmonitortools/zope
 	install -m 755 utils/mkzopeinit.py         $(CURDIR)/debian/upfrontmonitortools-utils/usr/bin/mkzopeinit
 
+	# Notification server
+	install -m 755 nagios/notification_server.py $(CURDIR)/debian/upfrontmonitortools-nagios-notificationserver/usr/lib/upfrontmonitortools/notificationserver
+
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
@@ -72,7 +75,7 @@ binary-arch: build install
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-#	dh_installinit
+	dh_installinit
 #	dh_installcron
 #	dh_installinfo
 	dh_installman

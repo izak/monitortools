@@ -1,0 +1,38 @@
+#! /bin/sh
+#
+# $Id$
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=usr/lib/upfrontmonitortools/notificationserver/notification_server.py
+NAME=notificationserver
+DESC=notificationserver
+
+test -x $DAEMON || exit 0
+
+test -f /etc/default/$NAME || exit 1
+
+source /etc/default/$NAME
+
+set -e
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid --make-pidfile --background \
+		--chuid nagios --exec $DAEMON
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon --stop --quiet --oknodo --pidfile /var/run/$NAME.pid \
+		&& rm -f /var/run/$NAME.pid
+	echo "$NAME."
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

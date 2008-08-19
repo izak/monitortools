@@ -14,6 +14,15 @@ Description: Nagios plugins for monitoring process memory and cpu usage
  .
  This package contains the nagios plugins.
 
+Package: upfrontmonitortools-nagios-notificationserver
+Depends: nagios | nagios2, python
+Architecture: all
+Description: Allows remote passive submissions to nagios
+ Tools written at upfront systems for monitoring, restarting and graphing processes.
+ .
+ This package contains the notification server that allows passive check
+ submissions to be submitted from remote hosts.
+
 Package: upfrontmonitortools-munin
 Architecture: any
 Depends: munin-node, ${shlibs:Depends}, ${misc:Depends}
