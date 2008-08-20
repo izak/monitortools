@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import BaseHTTPServer
+from optparse import OptionParser
 
 class PassiveNotificationHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -33,12 +34,26 @@ class PassiveNotificationHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             if not v.isalnum():
                 raise ValueError("Value must be alphanumeric")
 
-        fp = open("/var/lib/nagios2/rw/nagios.cmd", "a")
+        fp = open(self.server.nagioscmdpath, "a")
         fp.write("[%d] PROCESS_SERVICE_CHECK_RESULT;%s;%s;0;%s\n" % (timestamp, servername, servicename, message))
         fp.close()
 
+class PassiveNotificationHTTPServer(BaseHTTPServer.HTTPServer):
+    def __init__(self, server_address, RequestHandlerClass, nagioscmdpath):
+        BaseHTTPServer.HTTPServer.__init__(self, server_address, RequestHandlerClass)
+        self.nagioscmdpath = nagioscmdpath
+
 def main():
-    httpd = BaseHTTPServer.HTTPServer(('', 11511), PassiveNotificationHandler)
+    parser = OptionParser()
+    parser.add_option("-b", "--bind", help="Host name or ip to bind to", default='')
+    parser.add_option("-p", "--port", help="Port to listen on", default=11511)
+    parser.add_option("-c", "--commandpipe", help="Location of nagios command pipe",
+        default="/var/lib/nagios2/rw/nagios.cmd")
+    (options, args) = parser.parse_args()
+
+
+    httpd = PassiveNotificationHTTPServer((options.bind, int(options.port)),
+        PassiveNotificationHandler, options.commandpipe)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
