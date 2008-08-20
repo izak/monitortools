@@ -1,0 +1,15 @@
+# Defaults for upfrontmonitortools-nagios-notificationserver initscript
+# sourced by /etc/init.d/upfrontmonitortools-nagios-notificationserver
+# installed at /etc/default/upfrontmonitortools-nagios-notificationserver by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Specify which ip and port to bind to.  Defaults to 0.0.0.0:11511 if not specified
+#BINDTO="127.0.0.1"
+#PORT=11511
+
+# Specify the location of the nagios command pipe
+# Defaults to /var/lib/nagios2/rw/nagios.cmd
+#COMMANDPIPE=/var/lib/nagios2/rw/nagios.cmd
