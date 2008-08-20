@@ -19,7 +19,8 @@ case "$1" in
   start)
 	echo -n "Starting $DESC: "
 	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid --make-pidfile --background \
-		--chuid nagios --exec $DAEMON
+		--chuid nagios --exec $DAEMON -- ${BINDTO:+--bind=$BINDTO} ${PORT:+--port=$PORT} \
+		${COMMANDPIPE:+--commandpipe=$COMMANDPIPE}
 	echo "$NAME."
 	;;
   stop)
