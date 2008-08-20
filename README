@@ -1,6 +1,8 @@
 $Id$
 
-Munin plugin that monits a specific process's memory.
+Munin Plugins
+============
+Plugins that monitors a specific processes and allows you to graph memory and cpu usage.
 
 It works by scanning the process table for processes belonging to the specified
 user, tagged with an environment variable. If such a process exist it reports
@@ -40,3 +42,56 @@ environment, for example, to monitor a zope process, edit bin/runzope and add
 "export MUNIN_TAG=zope2.9" to it.
 
 5. Restart munin-node.
+
+Nagios plugins
+==============
+TODO
+
+Notification Server
+===================
+Take a look at /etc/nagios2/hosts/praekelt0.cfg on lala. It defines a service
+called backup, with only passive checks enabled, and the check command set to
+something that will fail, so if anyone ever enables active checks it will fail
+immediately. The freshness is set to 25 hours, so if it does not get a
+notification every 25 hours the service goes critical.
+
+Create a nagios service similar to this:
+
+	define service {
+	    use                     generic-service
+	    host_name               myhost
+	    name                    backup
+	    service_description     backup
+	    check_command           return-critical
+	    active_checks_enabled   0
+	    passive_checks_enabled  1
+	    check_freshness         1
+	# One backup every 25 hours please
+	    freshness_threshold     90000
+	}
+
+
+Start notification_server.py in the background. An init script is included in
+the debian setup. This is a simply python web server that listens on port 11511
+writes received notifications to the nagios command pipe.
+
+All you need to do is hit that server using wget or any other similar tool. The URL
+you have to request contains four components separated by slashes:
+
+1. Time stamp
+2. Server name as known to nagios
+3. Service name as known to nagios
+4. Status message, must be alphanumeric
+
+Example
+-------
+  wget -O- \
+    http://41.204.209.94:11511/`date +%s`/myhost/backup/OK \
+    > /dev/null
+
+Notes:
+------
+1. Port 11511 should be protected by suitable firewalling.
+
+2. If you want to monitor many similar services you may want to split some of
+the common nagios configuration items into a template.
