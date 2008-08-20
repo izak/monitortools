@@ -1,6 +1,6 @@
-# Defaults for upfrontmonitortools-nagios-notificationserver initscript
-# sourced by /etc/init.d/upfrontmonitortools-nagios-notificationserver
-# installed at /etc/default/upfrontmonitortools-nagios-notificationserver by the maintainer scripts
+# Defaults for notificationserver initscript
+# sourced by /etc/init.d/notificationserver
+# installed at /etc/default/notificationserver by the maintainer scripts
 
 #
 # This is a POSIX shell fragment
