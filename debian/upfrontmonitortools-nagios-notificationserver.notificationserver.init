@@ -3,7 +3,7 @@
 # $Id$
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=usr/lib/upfrontmonitortools/notificationserver/notification_server.py
+DAEMON=/usr/lib/upfrontmonitortools/notificationserver/notification_server.py
 NAME=notificationserver
 DESC=notificationserver
 
