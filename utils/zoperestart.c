@@ -20,6 +20,8 @@ int restart(const char *d){
     int ticks;
     int timeout;
     char *timeoutstring;
+    char *myzopectl;
+    char *myzopelog;
 
     /* Check that directory exists */
     if(stat(d, &zopedirstat)==-1){
@@ -34,9 +36,22 @@ int restart(const char *d){
         timeout = atoi(timeoutstring);
     }
 
+    /* Get alternative locations from environment */
+    myzopectl = getenv("ZOPE_RESTART_SCRIPT");
+    myzopelog = getenv("ZOPE_LOG_FILE");
+
     /* Set up required strings */
-    snprintf(zopectl, sizeof(zopectl), "%s/bin/zopectl restart", d);
-    snprintf(zopelog, sizeof(zopelog), "%s/log/event.log", d);
+    if(myzopectl){
+        snprintf(zopectl, sizeof(zopectl), "%s restart", myzopectl);
+    } else {
+        snprintf(zopectl, sizeof(zopectl), "%s/bin/zopectl restart", d);
+    }
+
+    if(myzopelog){
+        snprintf(zopelog, sizeof(zopelog), "%s", myzopelog);
+    } else {
+        snprintf(zopelog, sizeof(zopelog), "%s/log/event.log", d);
+    }
 
     /* Open log file and seek to the end */
     log = fopen(zopelog, "r");
