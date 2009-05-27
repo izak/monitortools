@@ -28,25 +28,28 @@ int main(int argc, char **argv){
     char *owner;
     char *tag;
     char *target;
+    char *cmdline = NULL;
     unsigned long int warning  = 0;
     unsigned long int critical = 0;
     int status = 3; /* UNKNOWN */
     int c;
 
     /* Parse options */
+    static struct option long_options[] = {
+        {"owner",    1, NULL, 'O'},
+        {"tag",      1, NULL, 'T'},
+        {"target",   1, NULL, 'V'},
+        {"warning",  1, NULL, 'W'},
+        {"critical", 1, NULL, 'C'},
+        {"cmdline",  1, NULL, 'P'},
+        {"help",     1, NULL, 'H'},
+        {0, 0, 0, 0}
+    };
+
     while(1){
         int option_index = 0;
-        static struct option long_options[] = {
-            {"owner",    1, NULL, 'O'},
-            {"tag",      1, NULL, 'T'},
-            {"target",   1, NULL, 'V'},
-            {"warning",  1, NULL, 'W'},
-            {"critical", 1, NULL, 'C'},
-            {"help",     1, NULL, 'H'},
-            {0, 0, 0, 0}
-        };
 
-        c = getopt_long (argc, argv, "O:T:V:W:C:H", long_options, &option_index);
+        c = getopt_long (argc, argv, "O:T:V:W:C:P:H", long_options, &option_index);
         if(c==-1){
             break;
         }
@@ -65,6 +68,9 @@ int main(int argc, char **argv){
                 break;
             case 'C':
                 critical = atol(optarg)*(strchr(optarg, 'k')?1024:(strchr(optarg, 'm')?1048576:1));
+                break;
+            case 'P':
+                cmdline = optarg;
                 break;
             case 'H':
             default:
@@ -91,7 +97,7 @@ int main(int argc, char **argv){
             char p[256+6];
             char name[1024];
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, NULL, name, sizeof(name))){
+            if(monitored(p, owner, tag, cmdline, name, sizeof(name))){
                 if(strncmp(name, target, strlen(target))==0){
                     unsigned long int mem = memusage(p);
                     if(mem > critical){
