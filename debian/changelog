@@ -1,10 +1,16 @@
+upfrontmonitortools (18) unstable; urgency=low
+
+  * Add --cmdline option to check_process_memory and check_process_cpu
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Wed, 27 May 2009 14:43:38 +0200
+
 upfrontmonitortools (17) unstable; urgency=low
 
   * Update check_drbd command. 
 
  -- Izak Burger <izak@upfrontsystems.co.za>  Thu, 12 Feb 2009 12:03:06 +0000
 
-upfrontmonitortools (16) intrepid; urgency=low
+upfrontmonitortools (16) unstable; urgency=low
 
   * New environment variables that allows custom zopectl scripts and log file
     location.
