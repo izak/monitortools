@@ -23,6 +23,7 @@ int main(int argc, char **argv){
     char *tag;
     char *cache;
     char *target;
+    char *cmdline = NULL;
     int warning  = 0;
     int critical = 0;
     int status = 3; /* UNKNOWN */
@@ -30,20 +31,21 @@ int main(int argc, char **argv){
     unsigned long int usage[2];
     unsigned long int uptime[2];
 
+    static struct option long_options[] = {
+        {"owner",    1, NULL, 'O'},
+        {"tag",      1, NULL, 'T'},
+        {"target",   1, NULL, 'V'},
+        {"warning",  1, NULL, 'W'},
+        {"critical", 1, NULL, 'C'},
+        {"cache",    1, NULL, 'S'},
+        {"cmdline",  1, NULL, 'P'},
+        {"help",     1, NULL, 'H'},
+        {0, 0, 0, 0}
+    };
     while(1){
         int option_index = 0;
-        static struct option long_options[] = {
-            {"owner",    1, NULL, 'O'},
-            {"tag",      1, NULL, 'T'},
-            {"target",   1, NULL, 'V'},
-            {"warning",  1, NULL, 'W'},
-            {"critical", 1, NULL, 'C'},
-            {"cache",    1, NULL, 'S'},
-            {"help",     1, NULL, 'H'},
-            {0, 0, 0, 0}
-        };
 
-        c = getopt_long (argc, argv, "O:T:V:W:C:S:H", long_options, &option_index);
+        c = getopt_long (argc, argv, "O:T:V:W:C:S:P:H", long_options, &option_index);
         if(c==-1){
             break;
         }
@@ -66,6 +68,9 @@ int main(int argc, char **argv){
             case 'S':
                 cache = optarg;
                 break;
+            case 'P':
+                cmdline = optarg;
+                break;
             case 'H':
             default:
                 printusage(argv[0]);
@@ -78,7 +83,7 @@ int main(int argc, char **argv){
         return 3; /* UNKNOWN */
     }
     if(warning > critical){
-        fprintf(stderr, "The Warning value (%lu) must be lower than the Critical value (%lu)\n", warning, critical);
+        fprintf(stderr, "The Warning value (%d) must be lower than the Critical value (%d)\n", warning, critical);
         return 3; /* UNKNOWN */
     }
 
@@ -92,7 +97,7 @@ int main(int argc, char **argv){
             char name[1024];
             unsigned long int ticks, span;
             snprintf(p, sizeof(p), "/proc/%s", de->d_name);
-            if(monitored(p, owner, tag, NULL, name, sizeof(name))){
+            if(monitored(p, owner, tag, cmdline, name, sizeof(name))){
                 char cachefile[1024];
                 snprintf(cachefile, sizeof(cachefile), "%s/%s", cache, name);
                 readcache(cachefile, &uptime[0], &usage[0]);
