@@ -1,3 +1,9 @@
+upfrontmonitortools (17) unstable; urgency=low
+
+  * Update check_drbd command. 
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Thu, 12 Feb 2009 12:03:06 +0000
+
 upfrontmonitortools (16) intrepid; urgency=low
 
   * New environment variables that allows custom zopectl scripts and log file
