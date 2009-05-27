@@ -9,7 +9,7 @@
 void printusage(const char *name){
     fprintf(stderr, "Usage: %s [-O | --owner=username] [-T | --tag=tag] [-V | --target=tagname]\n", name);
     fprintf(stderr, " [-W | --warning=percentage] [-C | --critical=percentage]\n");
-    fprintf(stderr, " [-S | --cache=dir] [-H | --help]\n");
+    fprintf(stderr, " [-S | --cache=dir] [-P | --cmdline=path] [-H | --help]\n");
 }
 
 void printmessage(const char *name, const char *stat, int u){
