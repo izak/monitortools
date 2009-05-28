@@ -49,10 +49,15 @@ int check_cmdline(const char* pidpath, const char* cmdline){
     if(cmdline != NULL){
         char procpidcmdline[1024];
         char buf[1024];
-        int i;
+        int i, j;
         snprintf(procpidcmdline, sizeof(procpidcmdline), "%s/cmdline", pidpath);
         i = readfile(procpidcmdline, buf, sizeof(buf));
-        return scanbuf(buf, i, cmdline) != NULL;
+        for (j=0; j<i-1; j++){
+            if(buf[j]=='\0'){
+                buf[j]=' ';
+            }
+        }
+        return strstr(buf, cmdline) != NULL;
     }
     return 1;
 }
