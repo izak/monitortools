@@ -52,7 +52,7 @@ int check_cmdline(const char* pidpath, const char* cmdline){
         int i;
         snprintf(procpidcmdline, sizeof(procpidcmdline), "%s/cmdline", pidpath);
         i = readfile(procpidcmdline, buf, sizeof(buf));
-        return strstr(buf, cmdline)!=NULL;
+        return scanbuf(buf, i, cmdline) != NULL;
     }
     return 1;
 }
