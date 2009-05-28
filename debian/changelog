@@ -1,3 +1,9 @@
+upfrontmonitortools (19) unstable; urgency=low
+
+  * Fix bug in --cmdline buffer handling
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Thu, 28 May 2009 10:59:52 +0200
+
 upfrontmonitortools (18) unstable; urgency=low
 
   * Add --cmdline option to check_process_memory and check_process_cpu
