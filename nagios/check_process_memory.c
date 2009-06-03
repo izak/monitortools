@@ -65,10 +65,10 @@ int main(int argc, char **argv){
                 target = optarg;
                 break;
             case 'W':
-                warning = atol(optarg)*(strchr(optarg, 'k')?1024:(strchr(optarg, 'm')?1048576:1));
+                warning = (unsigned long)atol(optarg)*(strchr(optarg, 'k')?1024:(strchr(optarg, 'm')?1048576:1));
                 break;
             case 'C':
-                critical = atol(optarg)*(strchr(optarg, 'k')?1024:(strchr(optarg, 'm')?1048576:1));
+                critical = (unsigned long)atol(optarg)*(strchr(optarg, 'k')?1024:(strchr(optarg, 'm')?1048576:1));
                 break;
             case 'P':
                 cmdline = optarg;

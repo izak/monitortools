@@ -1,3 +1,9 @@
+upfrontmonitortools (20) unstable; urgency=low
+
+  * Fix sign problem causing a memory check limit of 2048M
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Wed, 03 Jun 2009 10:19:06 +0200
+
 upfrontmonitortools (19) unstable; urgency=low
 
   * Fix bug in --cmdline buffer handling
