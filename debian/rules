@@ -52,6 +52,7 @@ install: build
 	install -m 755 utils/setuidgid             $(CURDIR)/debian/upfrontmonitortools-utils/usr/bin
 	install -m 755 utils/zoperestart           $(CURDIR)/debian/upfrontmonitortools-utils/usr/bin
 	install -m 644 utils/zope.init             $(CURDIR)/debian/upfrontmonitortools-utils/usr/share/upfrontmonitortools/zope
+	install -m 644 utils/zope.init.buildout    $(CURDIR)/debian/upfrontmonitortools-utils/usr/share/upfrontmonitortools/zope
 	install -m 755 utils/mkzopeinit.py         $(CURDIR)/debian/upfrontmonitortools-utils/usr/bin/mkzopeinit
 
 	# Notification server
