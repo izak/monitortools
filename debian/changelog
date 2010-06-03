@@ -1,3 +1,10 @@
+upfrontmonitortools (22) unstable; urgency=low
+
+  * Change zeoctl to zeo in zope.init.buildout
+  * 
+
+ -- Gareth Allen <gareth@upfrontsystems.co.za>  Thu, 03 Jun 2010 13:22:45 +0200
+
 upfrontmonitortools (20) unstable; urgency=low
 
   * Fix sign problem causing a memory check limit of 2048M
