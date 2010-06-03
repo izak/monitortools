@@ -44,7 +44,7 @@ SETUIDGID=/usr/bin/setuidgid
 
 startzeo() {
         start-stop-daemon --start --quiet --pidfile ${1}/var/zeo.pid \
-            --chuid ${SRVUSER} --exec ${1}/bin/zeoctl -- start
+            --chuid ${SRVUSER} --exec ${1}/bin/zeo -- start
 }
 
 stopzeo() {
