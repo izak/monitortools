@@ -84,4 +84,4 @@ if __name__ == '__main__':
         x = restart([arg], timeout)
         if x != 0:
             sys.exit(x)
-        sys.exit(1)
+    sys.exit(0)
