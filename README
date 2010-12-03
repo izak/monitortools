@@ -64,6 +64,10 @@ DESC and ZOPEBIN is required. CLIENTS default to instance{1,2}, ZEO is unset
 
 zope.init contains enough functionality to provide start and stop scripts.
 
+To install your init script on a debian machine, run:
+
+    update-rc.d zope_p11 defaults 95 05
+
 Nagios plugins
 ==============
 TODO
