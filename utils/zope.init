@@ -7,7 +7,7 @@
 # Example:
 
 # Base directory where zope cluster lives
-#     ZOPE=/home/zope/instances/zope1
+#     ZOPEBIN=/home/zope/instances/zope1
 #
 # Description of this instance
 #     DESC=zope1
@@ -15,15 +15,15 @@
 # How long to wait for a client to restart (default: 60)
 #     ZOPE_RESTART_TIMEOUT=60
 #
-# Relative paths of zeo and clients, relative to $ZOPE
-# (default: CLIENTS="client1 client2")
-#     CLIENTS="client1 client2"
+# Relative paths of zeo and client scripts, relative to $ZOPEBIN
+# (default: CLIENTS="instance1 instance2")
+#     CLIENTS="instance1 instance2"
 #
 # What user to run zope as (default: zope)
 #     SRVUSER=zope
 
-if test -z "$ZOPE"; then
-	echo "ZOPE variable is not set"
+if test -z "$ZOPEBIN"; then
+	echo "ZOPEBIN variable is not set"
 	exit 1
 fi
 
@@ -32,7 +32,7 @@ if test -z "$DESC"; then
 	exit 1
 fi
 
-CLIENTS=${CLIENTS:-"client1 client2"}
+CLIENTS=${CLIENTS:-"instance1 instance2"}
 SRVUSER=${SRVUSER:-"zope"}
 
 ZOPE_RESTART_TIMEOUT=${ZOPE_RESTART_TIMEOUT:-"60"}
@@ -42,22 +42,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 ZOPERESTART=/usr/bin/zoperestart
 SETUIDGID=/usr/bin/setuidgid
 
-startzeo() {
-        start-stop-daemon --start --quiet --pidfile ${1}/var/ZEO.pid \
-            --chuid ${SRVUSER} --exec ${1}/bin/zeoctl -- start
-}
-
-stopzeo() {
-        start-stop-daemon --stop --quiet --pidfile ${1}/var/ZEO.pid
-}
-
 startzope() {
-        start-stop-daemon --start --quiet --pidfile ${1}/var/Z2.pid \
-            --chuid ${SRVUSER} --exec ${1}/bin/zopectl -- start
+        start-stop-daemon --start --quiet --chuid ${SRVUSER} \
+            --exec ${1} -- start
 }
 
 stopzope() {
-        start-stop-daemon --stop --quiet --pidfile ${1}/var/Z2.pid
+        start-stop-daemon --start --quiet --chuid ${SRVUSER} \
+            --exec ${1} -- stop
 }
 
 set -e
@@ -68,12 +60,12 @@ case "$1" in
         # Start ZEO if defined
         if test -n "$ZEO"; then
                 echo -n " $ZEO "
-                startzeo ${ZOPE}/${ZEO}
+                startzope ${ZOPEBIN}/${ZEO}
         fi
         # Start clients
         for i in $CLIENTS; do
                 echo -n " $i "
-                startzope ${ZOPE}/${i}
+                startzope ${ZOPEBIN}/${i}
         done
         echo "done."
         ;;
@@ -82,29 +74,22 @@ case "$1" in
         # Stop clients
         for i in $CLIENTS; do
                 echo -n " $i "
-                stopzope ${ZOPE}/${i}
+                stopzope ${ZOPEBIN}/${i}
         done
         # Stop ZEO if defined
         if test -n "$ZEO"; then
                 echo -n " $ZEO "
-                stopzeo ${ZOPE}/${ZEO}
+                stopzope ${ZOPEBIN}/${ZEO}
         fi
         echo "done."
-        ;;
-  logtail)
-        logfiles=""
-        for i in $CLIENTS; do
-           logfiles="$logfiles ${ZOPE}/$i/log/event.log"
-        done
-        tail -F $logfiles
         ;;
   restart)
 	echo "Restarting $DESC: "
         for i in $CLIENTS; do
-		clients="${clients} ${ZOPE}/${i}"
+            clients="${clients} ${ZOPEBIN}/${i}"
         done
-	$SETUIDGID $SRVUSER $ZOPERESTART $clients
-	echo "done."
+        $SETUIDGID $SRVUSER $ZOPERESTART $clients
+        echo "done."
         ;;
   *)
         echo "Usage: $0 {start|stop|restart|logtail}" >&2

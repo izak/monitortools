@@ -43,6 +43,27 @@ environment, for example, to monitor a zope process, edit bin/runzope and add
 
 5. Restart munin-node.
 
+zope.init
+=========
+This is a file that containsenough bash to build quick start-stop scripts. All
+you need to do is create suitable file in /etc/init.d/yourzope, with the
+content:
+
+    ---- snip ---
+    DESC="Your Zope Instance Name"
+    ZOPEBIN=/home/zope/instances/yourzope/bin
+    CLIENTS="instance1 instance2"
+    ZEO=zeo
+    SRVUSER=zope
+    ZOPE_RESTART_TIMEOUT=60
+    source /usr/share/upfrontmonitortools/zope/zope.init
+    ---- snip ---
+
+DESC and ZOPEBIN is required. CLIENTS default to instance{1,2}, ZEO is unset
+(no zeo server), SRVUSER=zope and the default timeout is 60 seconds.
+
+zope.init contains enough functionality to provide start and stop scripts.
+
 Nagios plugins
 ==============
 TODO
