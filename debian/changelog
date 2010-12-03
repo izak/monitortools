@@ -1,7 +1,12 @@
+upfrontmonitortools (23) unstable; urgency=low
+
+  * Make more buildout compatible.
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Fri, 03 Dec 2010 22:30:55 +0200
+
 upfrontmonitortools (22) unstable; urgency=low
 
   * Change zeoctl to zeo in zope.init.buildout
-  * 
 
  -- Gareth Allen <gareth@upfrontsystems.co.za>  Thu, 03 Jun 2010 13:22:45 +0200
 
