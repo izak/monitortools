@@ -62,6 +62,7 @@ int main(int argc, const char **argv){
         }
         de = readdir(d);
     }
+    return 0;
 }
 
 /* vim: set ts=4 sw=4 expandtab: */
