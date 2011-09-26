@@ -72,7 +72,7 @@ int monitored(const char *pidpath, const char *zopeuser, const char *tag, const 
         }
         if(s_procpid.st_uid == zopeuid){
             char procpidenv[1024];
-            char env[4096];
+            char env[65535];
             const char *ptr;
             int i;
             snprintf(procpidenv, sizeof(procpidenv), "%s/environ", pidpath);
