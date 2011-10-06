@@ -45,11 +45,20 @@ int getzopeuid(const char *username){
     return pw->pw_uid;
 }
 
+int check_string(const char* haystack, const char* needle){
+    if(needle[0]=='!'){
+        return strstr(haystack, needle+1) == NULL;
+    }
+    return strstr(haystack, needle) != NULL;
+}
+
 int check_cmdline(const char* pidpath, const char* cmdline){
     if(cmdline != NULL){
         char procpidcmdline[1024];
         char buf[1024];
         int i, j;
+        const char *ptr;
+        const char *ptr2;
         snprintf(procpidcmdline, sizeof(procpidcmdline), "%s/cmdline", pidpath);
         i = readfile(procpidcmdline, buf, sizeof(buf));
         for (j=0; j<i-1; j++){
@@ -57,7 +66,27 @@ int check_cmdline(const char* pidpath, const char* cmdline){
                 buf[j]=' ';
             }
         }
-        return strstr(buf, cmdline) != NULL;
+        /* cmdline may be a comma seperated list  of elements to be matched,
+           and if an item is prefixed with ! the matching will be inverted */
+        ptr = cmdline;
+        ptr2 = strchr(ptr, ',');
+        if(ptr2){
+            int ok = 1;
+            char s[1024];
+            int len = 0;
+            while(ptr2){
+                len = ptr2 - ptr;
+                strncpy(s, ptr, len);
+                s[len] = '\0';
+                ok = ok && check_string(buf, s);
+                ptr = ptr2+1;
+                ptr2 = strchr(ptr, ',');
+            }
+            ok = ok && check_string(buf, ptr);
+            return ok;
+        } else {
+            return check_string(buf, cmdline);
+        }
     }
     return 1;
 }
