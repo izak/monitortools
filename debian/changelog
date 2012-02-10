@@ -1,3 +1,9 @@
+upfrontmonitortools (26) lucid; urgency=low
+
+  * Updates for squeeze.
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Fri, 10 Feb 2012 10:33:35 +0200
+
 upfrontmonitortools (25) unstable; urgency=low
 
   * Allow comma seperated lists of strings to match on the command-line,
