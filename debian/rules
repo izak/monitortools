@@ -39,6 +39,7 @@ install: build
 	install -m 755 nagios/check_datafs          $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 755 nagios/check_empty           $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 755 nagios/check_drbd            $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
+	install -m 755 nagios/checkraid.py          $(CURDIR)/debian/upfrontmonitortools-nagios/usr/lib/upfrontmonitortools/nagios
 	install -m 644 debian/pluginconfig/nagios/* $(CURDIR)/debian/upfrontmonitortools-nagios/usr/share/upfrontmonitortools/nagios/config
 
 	# Munin
