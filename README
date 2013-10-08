@@ -1,5 +1,3 @@
-$Id$
-
 Munin Plugins
 ============
 Plugins that monitors a specific processes and allows you to graph memory and cpu usage.
@@ -45,7 +43,7 @@ environment, for example, to monitor a zope process, edit bin/runzope and add
 
 zope.init
 =========
-This is a file that containsenough bash to build quick start-stop scripts. All
+This is a file that contains enough bash to build quick start-stop scripts. All
 you need to do is create suitable file in /etc/init.d/yourzope, with the
 content:
 
@@ -74,26 +72,30 @@ TODO
 
 Notification Server
 ===================
-Take a look at /etc/nagios2/hosts/praekelt0.cfg on lala. It defines a service
-called backup, with only passive checks enabled, and the check command set to
-something that will fail, so if anyone ever enables active checks it will fail
-immediately. The freshness is set to 25 hours, so if it does not get a
-notification every 25 hours the service goes critical.
+This is similar to the nsca server, but much simpler. It is meant to be set
+up internally behind a proper firewall, and implements a simple http server
+that will submit passive checks to nagios.
+
+An example of how to use this, is to define a passive check for backups.
+Set the check command to something that will fail, so if anyone ever
+enables active checks it will fail immediately. The freshness is set to 25
+hours, so if it does not get a notification every 25 hours the service goes
+critical.
 
 Create a nagios service similar to this:
 
-	define service {
-	    use                     generic-service
-	    host_name               myhost
-	    name                    backup
-	    service_description     backup
-	    check_command           return-critical
-	    active_checks_enabled   0
-	    passive_checks_enabled  1
-	    check_freshness         1
-	# One backup every 25 hours please
-	    freshness_threshold     90000
-	}
+    define service {
+        use                     generic-service
+        host_name               myhost
+        name                    backup
+        service_description     backup
+        check_command           return-numeric!2
+        active_checks_enabled   0
+        passive_checks_enabled  1
+        check_freshness         1
+        # One backup every 25 hours please
+        freshness_threshold     90000
+    }
 
 
 Start notification_server.py in the background. An init script is included in
