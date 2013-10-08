@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import re
 import BaseHTTPServer
 from optparse import OptionParser
 
@@ -31,7 +32,7 @@ class PassiveNotificationHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         message = servicedata[3]
         
         for v in (servername, servicename, message):
-            if not v.isalnum():
+            if re.compile('^[A-Za-z0-9-]+$').match(v) is None:
                 raise ValueError("Value must be alphanumeric")
 
         fp = open(self.server.nagioscmdpath, "a")

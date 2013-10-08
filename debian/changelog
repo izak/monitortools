@@ -1,3 +1,10 @@
+upfrontmonitortools (28) precise; urgency=low
+
+  * Allow notification server/service names to contain a bit more than just
+    alpha-numeric characters.
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Tue, 08 Oct 2013 11:55:29 +0200
+
 upfrontmonitortools (27) lucid; urgency=low
 
   * Add checkraid script.
