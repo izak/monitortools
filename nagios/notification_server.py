@@ -32,7 +32,7 @@ class PassiveNotificationHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         message = servicedata[3]
         
         for v in (servername, servicename, message):
-            if re.compile('^[A-Za-z0-9-]+$').match(v) is None:
+            if re.compile('^[A-Za-z0-9-.]+$').match(v) is None:
                 raise ValueError("Value must be alphanumeric")
 
         fp = open(self.server.nagioscmdpath, "a")
