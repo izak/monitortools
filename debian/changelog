@@ -1,3 +1,9 @@
+upfrontmonitortools (29) precise; urgency=low
+
+  * Make checkraid.py more robust against array rebuilds and scans.
+
+ -- Izak Burger <izak@upfrontsystems.co.za>  Tue, 12 Jan 2015 10:01:28 +0200
+
 upfrontmonitortools (28) precise; urgency=low
 
   * Allow notification server/service names to contain a bit more than just

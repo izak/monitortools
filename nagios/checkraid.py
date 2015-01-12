@@ -3,18 +3,18 @@
 import sys
 import re
 
+STATUS = re.compile('^[0-9]+ blocks ')
 GOOD = re.compile('\[U+\]')
 
 def check():
     lines = open('/proc/mdstat', 'r').readlines()[1:-1]
     lines = [line.strip() for line in lines if len(line.strip())>0]
-    assert len(lines)%2==0, "Something wrong with mdstat"
     bad = 0
     i = 0
-    while i < len(lines):
-        if GOOD.search(lines[i+1]) is None:
-            bad += 1
-        i += 2
+    for line in lines:
+        if STATUS.match(line):
+            if GOOD.search(line) is None:
+                bad += 1
     return bad
 
 if __name__ == '__main__':
